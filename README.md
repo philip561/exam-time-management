@@ -4,7 +4,7 @@ Final-year project, B.Eng Electrical and Electronics Engineering, Abubakar Tafaw
 
 A 192 × 32 pixel LED display that counts down three examinations at once and keeps correct time through power cuts. Each countdown is stored as an absolute end time and compared with a battery-backed DS1307 real-time clock.
 
-Live page: https://philip561.github.io/exam-countdown-system/
+Live page: https://philip561.github.io/exam-time-management/
 
 ## Suggested repository layout
 
