@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examination Countdown Time Management System | Final-year project, ATBU Bauchi</title>
+<meta name="description" content="An LED examination clock that counts down up to three papers at once and keeps correct time through power cuts. Installed in the NLTA Engineering Theatre, Abubakar Tafawa Balewa University, Bauchi. Final-year project, Electrical and Electronics Engineering.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Design and Construction of Examination Countdown Time Management System">
+<meta property="og:description" content="Three exams, one LED display, and a clock that survives power cuts. Final-year project at ATBU Bauchi.">
+<!-- After publishing, replace the line below with your full address, for example https://YOUR-USERNAME.github.io/exam-countdown-system/assets/preview.png -->
+<meta property="og:image" content="assets/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230a0c0b%27/%3E%3Cg fill=%27%23ff4a3d%27%3E%3Ccircle cx=%277%27 cy=%2710%27 r=%272.4%27/%3E%3Ccircle cx=%2716%27 cy=%2710%27 r=%272.4%27/%3E%3Ccircle cx=%2725%27 cy=%2710%27 r=%272.4%27/%3E%3C/g%3E%3Cg fill=%27%234cf08a%27%3E%3Ccircle cx=%277%27 cy=%2722%27 r=%272.4%27/%3E%3Ccircle cx=%2716%27 cy=%2722%27 r=%272.4%27/%3E%3Ccircle cx=%2725%27 cy=%2722%27 r=%272.4%27/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f2f4f0; --ink:#17201c; --muted:#53615a; --rule:#c9d2ca; --panel:#ffffff;
+  --blue:#1b4fd6; --blue-ink:#ffffff; --board:#0a0c0b; --led-off:#151a17;
+  --head:"Archivo","Arial Narrow",Arial,sans-serif; --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#111714; --ink:#e7eee9; --muted:#9baba2; --rule:#2a3830; --panel:#18201c; --blue:#7fa6ff; --blue-ink:#0b1220; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.125rem;line-height:1.7}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.wrap{width:min(1080px,100% - 2.5rem);margin-inline:auto}
+.prose{max-width:66ch}
+h1,h2,h3{font-family:var(--head);font-stretch:82%;font-weight:800;line-height:1.08;margin:0}
+h1{font-size:clamp(2rem,4.4vw,3.5rem);letter-spacing:-.012em;max-width:24ch}
+h2{font-size:clamp(1.6rem,3vw,2.1rem);letter-spacing:-.005em;margin-bottom:1rem}
+h3{font-size:1.15rem;font-stretch:90%;font-weight:700;margin-bottom:.35rem}
+p{margin:0 0 1.1rem}
+.top{border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;align-items:center;justify-content:space-between;padding:.9rem 0}
+.top strong{font-family:var(--head);font-stretch:85%;font-weight:800;font-size:1rem}
+.top nav{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-family:var(--head);font-stretch:90%;font-weight:600;font-size:.98rem}
+.top nav a{color:var(--ink);text-decoration:none;padding:.2rem 0}
+.top nav a:hover{text-decoration:underline}
+.hero{padding:clamp(2rem,6vw,4.5rem) 0 2.5rem}
+.lede{font-size:1.25rem;color:var(--muted);max-width:58ch;margin:1.3rem 0 2rem}
+.board-frame{background:var(--board);border-radius:10px;padding:clamp(.6rem,1.6vw,1.1rem);border:1px solid #2c3731}
+#board{display:block;width:100%;height:auto;border-radius:4px}
+.controls{display:flex;flex-wrap:wrap;gap:.7rem 1rem;align-items:center;margin-top:1.1rem}
+.btn{font-family:var(--head);font-stretch:90%;font-weight:700;font-size:1rem;padding:.7rem 1.15rem;border-radius:6px;border:2px solid var(--blue);background:var(--blue);color:var(--blue-ink);cursor:pointer;text-decoration:none;display:inline-block;line-height:1.2}
+.btn.alt{background:transparent;color:var(--blue)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.note{color:var(--muted);font-size:.98rem;margin:0}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem 2.5rem;margin-top:1.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
+.compare dt{font-family:var(--head);font-stretch:90%;font-weight:700;font-size:1rem}
+.compare dd{margin:.1rem 0 0;font-family:var(--head);font-stretch:80%;font-weight:800;font-size:2.4rem;line-height:1.1}
+.compare small{display:block;font-family:var(--body);font-weight:400;font-size:.95rem;color:var(--muted);margin-top:.2rem}
+#status{min-height:1.7em;margin-top:1rem}
+section{padding:3rem 0;border-top:1px solid var(--rule)}
+.facts{display:grid;grid-template-columns:minmax(10rem,14rem) 1fr;gap:.9rem 2rem;margin:0;max-width:880px}
+.facts dt{font-family:var(--head);font-stretch:90%;font-weight:700}
+.facts dd{margin:0}
+@media (max-width:640px){.facts{grid-template-columns:1fr;gap:.1rem}.facts dd{margin-bottom:.9rem}}
+.formula{font-family:var(--head);font-stretch:85%;font-weight:700;font-size:clamp(1.2rem,3vw,1.7rem);padding:1rem 1.2rem;border-left:5px solid var(--blue);background:var(--panel);margin:1.4rem 0;max-width:44rem}
+table{border-collapse:collapse;width:100%;max-width:920px;font-size:1rem}
+caption{text-align:left;font-family:var(--head);font-stretch:90%;font-weight:700;padding-bottom:.6rem}
+th,td{text-align:left;vertical-align:top;padding:.7rem .8rem .7rem 0;border-top:1px solid var(--rule)}
+th{font-family:var(--head);font-stretch:90%;font-weight:700}
+.scroll{overflow-x:auto}
+.diagram{width:100%;max-width:900px;height:auto;display:block;background:#fff;border:1px solid var(--rule);border-radius:6px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.6rem;margin-top:1.4rem}
+.gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;display:block;background:var(--panel)}
+.gallery.portrait img{aspect-ratio:4/5}
+.wide{width:100%;max-width:900px;height:auto;display:block;border-radius:6px;background:var(--panel)}
+.gallery figcaption{font-size:.98rem;color:var(--muted);margin-top:.5rem}
+figure{margin:0}
+.video{position:relative;aspect-ratio:16/9;max-width:900px;background:#000;border-radius:6px;overflow:hidden}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+ul.plain{margin:0;padding-left:1.2rem;max-width:66ch}
+ul.plain li{margin-bottom:.55rem}
+.team{columns:2 16rem;max-width:620px;list-style:none;padding:0;margin:0 0 1.3rem}
+.team li{padding:.15rem 0;break-inside:avoid}
+footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);font-size:.98rem}
+.guide-grid{}@media (max-width:640px){.guide-grid{grid-template-columns:1fr!important}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <strong>Examination Countdown Time Management System</strong>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#how">How it keeps time</a>
+      <a href="#results">Results</a>
+      <a href="#build">Build</a>
+      <a href="#installed">On the wall</a>
+      <a href="#guide">Guide</a>
+      <a href="#video" id="nav-video" hidden>Video</a>
+      <a href="#code" id="nav-code" hidden>Code</a>
+      <a href="#team">Team</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero">
+  <h1>Design and Construction of Examination Countdown Time Management System</h1>
+  <p class="lede">An LED examination clock that counts down up to three papers at once and keeps the right time through power cuts. Built by final-year Electrical and Electronics Engineering students at Abubakar Tafawa Balewa University, Bauchi, and installed in the NLTA Engineering Theatre.</p>
+
+  <div class="board-frame">
+    <canvas id="board" width="1920" height="320" role="img" aria-label="Simulated 192 by 32 pixel LED display showing three course names in red and three countdown times in green."></canvas>
+  </div>
+  <div class="controls">
+    <button class="btn" id="cut" type="button">Cut the power for 3 minutes</button>
+    <button class="btn alt" id="reset" type="button">Restart the demo</button>
+    <p class="note">This is a simulation of the real display. The course codes and durations are examples.</p>
+  </div>
+  <p id="status" class="note" role="status" aria-live="polite"></p>
+
+  <dl class="compare" aria-label="Comparison after a power cut">
+    <div><dt>Our display (end time stored, clock keeps running)</dt><dd id="ours">--:--</dd><small id="ours-note">Press the button to see what happens.</small></div>
+    <div><dt>A simple timer (count held in chip memory)</dt><dd id="naive">--:--</dd><small id="naive-note">It stops counting when the power is lost.</small></div>
+  </dl>
+
+  <p style="margin-top:1.8rem;display:flex;flex-wrap:wrap;gap:.7rem" id="actions"></p>
+</div>
+
+<section id="about">
+  <div class="wrap">
+    <h2>About the project</h2>
+    <div class="prose">
+      <p>Large examination halls often run several papers at the same time. Candidates and invigilators have to rely on wall clocks, announcements or times written on a board, which are hard to read from the back of a hall and cannot track several papers of different lengths at once.</p>
+      <p>This project is an electronic notice board built for that job. A 192 × 32 pixel LED display is divided into three cells, one for each course. An examination officer enters the course names and durations on a keypad and starts the papers separately or together. Each cell then shows the course code in red and the time left in green. A buzzer sounds at 15 minutes and 5 minutes before the end and again at time-up, and the cell then shows TIME UP!</p>
+      <p>Its main feature is that it keeps correct time through power cuts. Instead of counting down in the microcontroller's memory, it stores each paper's end time and reads the current time from a battery-backed clock, so the remaining time is right the moment power returns. The system is installed in the NLTA Engineering Theatre at ATBU Bauchi for use in examinations held there.</p>
+    </div>
+    <h3 style="margin:2rem 0 .8rem">At a glance</h3>
+    <dl class="facts">
+      <dt>Display</dt><dd>192 × 32 pixels, made of twelve two-colour P10 LED modules in two rows of six.</dd>
+      <dt>Courses</dt><dd>Up to three at once, each with its own name and duration.</dd>
+      <dt>Control</dt><dd>Two ATmega328P microcontrollers, a master and a slave, linked by a serial connection with an error check.</dd>
+      <dt>Input</dt><dd>A 4 × 4 matrix keypad.</dd>
+      <dt>Timekeeping</dt><dd>A DS1307 real-time clock with battery backup. Each countdown is stored as an absolute end time.</dd>
+      <dt>Alerts</dt><dd>Buzzer at 15 minutes, at 5 minutes and at time-up.</dd>
+      <dt>Power</dt><dd>230 V AC mains through three 5 V, 20 A switched-mode power supplies.</dd>
+      <dt>Tested</dt><dd>Legible at 25 m. Timekeeping error of 1.67 s per hour. Correct time restored after a 3 minute power cut.</dd>
+      <dt>Installed</dt><dd>NLTA Engineering Theatre, Abubakar Tafawa Balewa University, Bauchi.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="what">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <dl class="facts">
+      <dt>Shows three papers</dt><dd>Each course gets a cell on the board: its name in red on the top row and its remaining time in green on the bottom row. The text is readable from 25 m.</dd>
+      <dt>Takes input from a keypad</dt><dd>An examination officer enters course names and durations on a 4 × 4 keypad, using the multi-tap method of old mobile phones, and starts the countdowns one by one or all together.</dd>
+      <dt>Sounds three alerts</dt><dd>A buzzer sounds at 15 minutes remaining, at 5 minutes remaining and at time-up. When a paper ends, its cell shows TIME UP!</dd>
+      <dt>Survives power cuts</dt><dd>After a 3 minute outage it shows the correct remaining time at once. The next section explains why.</dd>
+      <dt>Built from common parts</dt><dd>Two ATmega328P microcontrollers, a DS1307 real-time clock, twelve P10 LED modules and three 5 V, 20 A switched-mode power supplies.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it keeps time</h2>
+    <div class="prose">
+      <p>Most simple timers count down inside the microcontroller's memory. When the power fails, the count is lost, and the display restarts from a wrong value.</p>
+      <p>Our system does not count down at all. When a countdown starts, it works out the moment the exam must end and stores that end time. A DS1307 real-time clock with its own battery keeps running when everything else is off. At every moment, the remaining time is simply:</p>
+      <p class="formula">remaining time = end time − current time</p>
+      <p>Try it in the demo above. Cut the power, wait for it to come back, and compare the two readouts. The display subtracts the stored end time from the clock, so the missing minutes are already accounted for.</p>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <h2>What we measured</h2>
+    <div class="scroll">
+    <table>
+      <caption>Laboratory test results</caption>
+      <thead><tr><th scope="col">Test</th><th scope="col">Result</th><th scope="col">Target</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Viewing distance</th><td>Course names and times were legible at 25 m.</td><td>Readable from the back of an examination hall</td></tr>
+        <tr><th scope="row">Timekeeping</th><td>5 s slow over 3 h, which is 1.67 s per hour.</td><td>Within ±2 s per hour</td></tr>
+        <tr><th scope="row">Power interruption</th><td>After a 3 min cut with 30 min 29 s remaining, it showed 27 min 29 s, the correct value.</td><td>Correct remaining time after power returns</td></tr>
+        <tr><th scope="row">Alerts</th><td>The buzzer sounded at 15 min, 5 min and time-up.</td><td>Three alerts per course</td></tr>
+        <tr><th scope="row">Panel current</th><td>One panel drew 2 A with normal text displayed.</td><td>Design limit of 2.67 A per panel</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note" style="margin-top:1rem;max-width:66ch">All tests were done in the laboratory, not in a live examination hall. The timekeeping margin is small, and the reference clock was a mobile phone. A temperature-compensated clock and a longer test would improve both.</p>
+  </div>
+</section>
+
+<section id="build">
+  <div class="wrap">
+    <h2>How it is built</h2>
+    <p class="prose">The units are grouped into four blocks. Keypad and clock go in, two controllers do the work, the display and buzzer give the output, and one power supply feeds everything.</p>
+    <img class="diagram" src="assets/block-diagram.png" alt="Block diagram with four blocks: input and timing unit (keypad and DS1307 real-time clock), control unit (master and slave ATmega328P), output unit (P10 LED display and buzzer) and power supply unit." width="1767" height="1034" loading="lazy">
+
+    <h3 style="margin-top:2.2rem">Why two controllers</h3>
+    <div class="prose">
+      <p>A 192 × 32 pixel display needs constant refreshing and a lot of frame memory. One ATmega328P would be stretched too thin, so the master handles the keypad, the clock, the buzzer and the top row, while the slave drives the bottom row. They talk over a serial link at 9600 baud, and every message carries a CRC-8 check, so corrupted data is thrown away.</p>
+    </div>
+
+    <h3 style="margin-top:2.2rem">From breadboard to finished board</h3>
+    <div class="gallery">
+      <figure><img src="assets/plate-1.jpg" alt="A breadboard wired to a P10 module through a ribbon cable." loading="lazy"><figcaption>Breadboard wiring of the controller to a P10 module through the HUB12 ribbon cable.</figcaption></figure>
+      <figure><img src="assets/plate-2.jpg" alt="Group members wiring and testing P10 display modules on a table." loading="lazy"><figcaption>Wiring and testing of the P10 display modules.</figcaption></figure>
+      <figure><img src="assets/plate-3.jpg" alt="Group members assembling display modules and power connections outdoors." loading="lazy"><figcaption>Assembly of the display modules and their power connections.</figcaption></figure>
+      <figure><img src="assets/plate-4.jpg" alt="Group members soldering and testing with a multimeter." loading="lazy"><figcaption>Soldering and testing during construction.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="installed">
+  <div class="wrap">
+    <h2>Mounted and running</h2>
+    <p class="prose">After the bench tests, the board was installed in the NLTA Engineering Theatre, where it is meant for use during examinations held in the venue. It is mounted on the wall above the whiteboards. The keypad unit sits on the wall below it, and the cable runs down the wall to the controllers and power supply.</p>
+    <figure style="margin-top:1.4rem">
+      <img class="wide" src="assets/installed-1.jpg" alt="The finished display on the wall of the NLTA Engineering Theatre showing three red course codes, EE511, EE520 and EE510, each above a green countdown time." width="1500" height="1125" loading="lazy">
+      <figcaption class="note" style="margin-top:.5rem">The finished board in the NLTA Engineering Theatre, counting down three courses at once.</figcaption>
+    </figure>
+
+    <h3 style="margin-top:2.2rem">Mounting day</h3>
+    <div class="gallery">
+      <figure><img src="assets/mount-1.jpg" alt="Three group members lifting the dark display frame onto its wall brackets above the whiteboards." loading="lazy"><figcaption>Lifting the display frame onto its wall brackets.</figcaption></figure>
+      <figure><img src="assets/mount-2.jpg" alt="A group member standing on a metal stand to fix the display frame to the wall while another steadies the stand." loading="lazy"><figcaption>Fixing the frame in place from a stand.</figcaption></figure>
+      <figure><img src="assets/mount-3.jpg" alt="A group member holding the cable that runs down the wall from the display to the keypad unit." loading="lazy" style="object-position:center 35%"><figcaption>Running the cable down the wall.</figcaption></figure>
+    </div>
+
+    <h3 style="margin-top:2.2rem">Counting down</h3>
+    <div class="gallery portrait">
+      <figure><img src="assets/installed-2.jpg" alt="A group member standing below the live display, which shows EE511 at 00:12:28, EE520 at 00:27:28 and EE510 at 00:56:38." loading="lazy" style="object-position:center top"><figcaption>The three cells showing the time left for EE511, EE520 and EE510.</figcaption></figure>
+      <figure><img src="assets/installed-3.jpg" alt="A group member below the live display, which now shows EE511 at 00:12:45, EE520 at 00:27:45 and EE510 at 00:56:55." loading="lazy" style="object-position:center top"><figcaption>Moments later, all three counts have moved on together.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="defense">
+  <div class="wrap">
+    <h2>Project defense day</h2>
+    <p class="prose">The system was presented at the external project defense. The first photo shows it in use: two papers have ended and show TIME UP!, while the third is still counting down.</p>
+    <figure style="margin-top:1.4rem">
+      <img class="wide" src="assets/defense-1.jpg" alt="The display on a table at the defense, showing EE515 and EE523 with TIME UP! and EE510 with 00:54:15 still counting down." width="1280" height="960" loading="lazy">
+      <figcaption class="note" style="margin-top:.5rem">Defense day: EE515 and EE523 have finished, and EE510 is still running.</figcaption>
+    </figure>
+    <div class="gallery" style="margin-top:1.6rem">
+      <figure><img src="assets/defense-2.jpg" alt="Six people standing on either side of the display at the defense venue." loading="lazy"><figcaption>With the board at the defense venue.</figcaption></figure>
+      <figure><img src="assets/defense-3.jpg" alt="Seven people standing together behind the display, which rests on the ground outside the building." loading="lazy"><figcaption>Group photo with the board after the defense.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="wrap">
+    <h2>Using it: invigilator quick guide</h2>
+    <p class="prose">A one-page guide for invigilators is printed on A4 and hung beside the board. It covers switching on, setting up each course, starting the papers, the buzzer alerts, and what to do if the power fails.</p>
+    <div style="display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:1.8rem;align-items:start;margin-top:1.3rem" class="guide-grid">
+      <a href="assets/invigilator-guide.png"><img src="assets/invigilator-guide.png" alt="The A4 invigilator quick guide with five numbered steps and a box explaining when to press the D key." style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;background:#fff" loading="lazy"></a>
+      <p style="display:flex;flex-wrap:wrap;gap:.7rem;margin:0"><a class="btn" href="assets/invigilator-guide.pdf">Download the guide (PDF)</a><a class="btn alt" href="assets/invigilator-guide.png">Open the image</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <h2>What went wrong along the way</h2>
+    <div class="prose">
+      <p>We lost a week to a faulty breadboard. The display only came up when a group member suggested swapping it.</p>
+      <p>Later, after we thought the system was nearly done, we tested it against a phone. In 30 minutes it had lost 10. That is why the real-time clock is in the design. After we added it, the same kind of test lost 5 seconds in 3 hours.</p>
+      <p>Once the full board was running, the bottom row began to glitch badly, and sometimes it refused to come up at all. The problem stayed until we replaced the ATmega that drives that row with a new one. After that, the fault was gone.</p>
+      <p>We laughed at our own mistakes all the way through, and that is a large part of why the team held together.</p>
+      <p id="article-line" hidden>Read the full story in <a id="article-link" href="#">the article</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="video" hidden>
+  <div class="wrap">
+    <h2>Demo video</h2>
+    <div class="video"><iframe id="video-frame" title="Demo video of the examination countdown time management system" allowfullscreen loading="lazy"></iframe></div>
+  </div>
+</section>
+
+<section id="code" hidden>
+  <div class="wrap">
+    <h2>Source code and report</h2>
+    <p class="prose">The firmware for both controllers is written in C++ for the Arduino environment. The project report has the circuit diagrams, calculations and test details.</p>
+    <p style="display:flex;flex-wrap:wrap;gap:.7rem"><a class="btn" id="code-link" href="#" hidden>Browse the source code</a><a class="btn alt" id="report-link" href="#" hidden>Read the full report</a></p>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <h2>What students could add next</h2>
+    <ul class="plain">
+      <li>Wi-Fi control, so course names and times can be set from a phone.</li>
+      <li>Voice alerts that announce "fifteen minutes remaining" aloud.</li>
+      <li>Automatic time setting over the network.</li>
+      <li>A battery backup so the display keeps running during an outage.</li>
+      <li>Full-colour panels that change colour as time runs out.</li>
+      <li>Several boards synchronised across one examination centre.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <h2>The team</h2>
+    <ul class="team">
+      <li>Idris Adamu Shuaibu</li>
+      <li>Dashe Tongnan Levi</li>
+      <li>Abdulhayyu Muhammed</li>
+      <li>Saliu Abdulgafar</li>
+      <li>Caleb Ponsak Philip</li>
+      <li>Sani Philip Friday</li>
+    </ul>
+    <p class="prose"><strong>Supervisor:</strong> Engr. Yusuf Saleh</p>
+    <p class="prose">Department of Electrical and Electronics Engineering, Faculty of Engineering and Engineering Technology, Abubakar Tafawa Balewa University, Bauchi.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    Design and Construction of Examination Countdown Time Management System, 2026.
+    <span id="contact-line" hidden> Questions or feedback? <a id="contact-link" href="#">Get in touch</a>.</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- Edit these links after you publish ----------
+   report  : link to the PDF of the report (for example "docs/Project_Report.pdf") or a full web address
+   code    : link to the firmware folder in your repository
+   video   : the YouTube video ID only (the part after v= in the address)
+   article : link to your LinkedIn or other article
+   contact : link for questions, such as mailto:you@example.com or your LinkedIn profile
+   Leave a value empty ("") and that button or section stays hidden. */
+var LINKS = { report:"", code:"", video:"", article:"", contact:"" };
+
+/* ---------- Links ---------- */
+(function(){
+  var actions=document.getElementById('actions');
+  function add(label,href,primary){var a=document.createElement('a');a.className='btn'+(primary?'':' alt');a.href=href;a.textContent=label;actions.appendChild(a);}
+  if(LINKS.report) add('Read the full report',LINKS.report,true);
+  if(LINKS.code) add('Browse the source code',LINKS.code,false);
+  if(LINKS.video) add('Watch the demo video','#video',false);
+  if(LINKS.article) add('Read the story',LINKS.article,false);
+  if(!actions.children.length) actions.hidden=true;
+  if(LINKS.video){document.getElementById('video').hidden=false;document.getElementById('nav-video').hidden=false;document.getElementById('video-frame').src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(LINKS.video);}
+  if(LINKS.code||LINKS.report){document.getElementById('code').hidden=false;document.getElementById('nav-code').hidden=false;
+    if(LINKS.code){var c=document.getElementById('code-link');c.href=LINKS.code;c.hidden=false;}
+    if(LINKS.report){var r=document.getElementById('report-link');r.href=LINKS.report;r.hidden=false;}}
+  if(LINKS.contact){var cl=document.getElementById('contact-line');cl.hidden=false;document.getElementById('contact-link').href=LINKS.contact;}
+  if(LINKS.article){document.getElementById('article-line').hidden=false;document.getElementById('article-link').href=LINKS.article;}
+})();
+
+/* ---------- LED display simulation ---------- */
+(function(){
+  var W=192,H=32,CELL=10;
+  var cv=document.getElementById('board'),ctx=cv.getContext('2d');
+  var FONT={
+   '0':["01110","10001","10011","10101","11001","10001","01110"],
+   '1':["00100","01100","00100","00100","00100","00100","01110"],
+   '2':["01110","10001","00001","00010","00100","01000","11111"],
+   '3':["11110","00001","00001","01110","00001","00001","11110"],
+   '4':["00010","00110","01010","10010","11111","00010","00010"],
+   '5':["11111","10000","11110","00001","00001","10001","01110"],
+   '6':["00110","01000","10000","11110","10001","10001","01110"],
+   '7':["11111","00001","00010","00100","01000","01000","01000"],
+   '8':["01110","10001","10001","01110","10001","10001","01110"],
+   '9':["01110","10001","10001","01111","00001","00010","01100"],
+   ':':["00000","00100","00100","00000","00100","00100","00000"],
+   'A':["01110","10001","10001","11111","10001","10001","10001"],
+   'E':["11111","10000","10000","11110","10000","10000","11111"],
+   'G':["01110","10001","10000","10111","10001","10001","01111"],
+   'H':["10001","10001","10001","11111","10001","10001","10001"],
+   'M':["10001","11011","10101","10101","10001","10001","10001"],
+   'N':["10001","11001","10101","10011","10001","10001","10001"],
+   'P':["11110","10001","10001","11110","10000","10000","10000"],
+   'R':["11110","10001","10001","11110","10100","10010","10001"],
+   'S':["01111","10000","10000","01110","00001","00001","11110"],
+   'T':["11111","00100","00100","00100","00100","00100","00100"],
+   'Y':["10001","10001","01010","00100","00100","00100","00100"],
+   ' ':["00000","00000","00000","00000","00000","00000","00000"]
+  };
+  var COURSES=[{name:'EE511',dur:15*60},{name:'EE520',dur:30*60},{name:'EE510',dur:60*60}];
+  var OUTAGE=180000, OUTAGE_REAL=3500;
+  var frame=new Uint8Array(W*H);
+  var offset,start0,outageTotal,state,cutV,restoreTimer,lastOurs;
+  var elStatus=document.getElementById('status');
+  var elOurs=document.getElementById('ours'),elNaive=document.getElementById('naive');
+  var elOursNote=document.getElementById('ours-note'),elNaiveNote=document.getElementById('naive-note');
+  var btnCut=document.getElementById('cut');
+
+  function vnow(){return performance.now()+offset;}
+  function fmt(s){s=Math.max(0,s);var m=Math.floor(s/60),r=s%60;return (m<10?'0':'')+m+':'+(r<10?'0':'')+r;}
+  function put(x,y,c){if(x>=0&&x<W&&y>=0&&y<H)frame[y*W+x]=c;}
+  function drawText(str,cellX,rowY,scale,color){
+    var w=str.length*6*scale-scale;
+    var x0=cellX+Math.floor((64-w)/2), y0=rowY+Math.floor((16-7*scale)/2);
+    for(var i=0;i<str.length;i++){
+      var g=FONT[str[i]]||FONT[' '];
+      for(var r=0;r<7;r++)for(var c=0;c<5;c++)if(g[r][c]==='1')
+        for(var dy=0;dy<scale;dy++)for(var dx=0;dx<scale;dx++)put(x0+i*6*scale+c*scale+dx,y0+r*scale+dy,color);
+    }
+  }
+  function remainingOurs(i){return Math.max(0,Math.ceil((start0+COURSES[i].dur*1000-vnow())/1000));}
+  function remainingNaive(i){
+    var powered=(vnow()-start0)-outageTotal;
+    return Math.max(0,COURSES[i].dur-Math.floor(powered/1000));
+  }
+  function render(){
+    frame.fill(0);
+    if(state==='on'){
+      for(var i=0;i<3;i++){drawText(COURSES[i].name,i*64,0,2,1);drawText(fmt(remainingOurs(i)),i*64,16,2,2);}
+    }
+    ctx.fillStyle='#0a0c0b';ctx.fillRect(0,0,cv.width,cv.height);
+    for(var y=0;y<H;y++)for(var x=0;x<W;x++){
+      var v=frame[y*W+x],cx=(x+.5)*CELL,cy=(y+.5)*CELL;
+      if(v){var col=v===1?'255,74,61':'76,240,138';
+        ctx.fillStyle='rgba('+col+',.22)';ctx.beginPath();ctx.arc(cx,cy,4.9,0,6.2832);ctx.fill();
+        ctx.fillStyle='rgb('+col+')';ctx.beginPath();ctx.arc(cx,cy,3.6,0,6.2832);ctx.fill();
+      }else{ctx.fillStyle='#151a17';ctx.beginPath();ctx.arc(cx,cy,3.1,0,6.2832);ctx.fill();}
+    }
+    ctx.strokeStyle='#2b342f';ctx.lineWidth=2;
+    for(var m=1;m<6;m++){ctx.beginPath();ctx.moveTo(m*32*CELL,0);ctx.lineTo(m*32*CELL,H*CELL);ctx.stroke();}
+    ctx.beginPath();ctx.moveTo(0,16*CELL);ctx.lineTo(W*CELL,16*CELL);ctx.stroke();
+    if(state==='on'&&lastOurs!==null){
+      elOurs.textContent=fmt(remainingOurs(0));
+      elNaive.textContent=fmt(remainingNaive(0));
+    }
+  }
+  function reset(){
+    clearTimeout(restoreTimer);
+    offset=0;start0=vnow();outageTotal=0;state='on';cutV=0;lastOurs=0;
+    btnCut.disabled=false;
+    elStatus.textContent='';
+    elOursNote.textContent='Press the button to see what happens.';
+    elNaiveNote.textContent='It stops counting when the power is lost.';
+    render();
+  }
+  function cut(){
+    if(state!=='on')return;
+    state='off';cutV=vnow();btnCut.disabled=true;
+    elOurs.textContent='--:--';elNaive.textContent='--:--';
+    elStatus.textContent='Power cut. The display is dark, but the real-time clock is still running on its battery.';
+    render();
+    restoreTimer=setTimeout(function(){
+      offset=(cutV+OUTAGE)-performance.now();   // the clock now reads 3 minutes later than at the cut
+      outageTotal+=OUTAGE;state='on';btnCut.disabled=false;
+      var o=remainingOurs(0),n=remainingNaive(0);
+      elStatus.textContent='Power restored after 3 minutes. The display read '+fmt(o)+' straight away.';
+      elOursNote.textContent='Correct: the 3 minutes are already taken off.';
+      elNaiveNote.textContent=fmt(n-o>0?n-o:0)+' behind, because it did not count during the outage.';
+      render();
+    },OUTAGE_REAL);
+  }
+  document.getElementById('cut').addEventListener('click',cut);
+  document.getElementById('reset').addEventListener('click',reset);
+  reset();
+  setInterval(render,250);
+})();
+</script>
+</body>
+</html>
