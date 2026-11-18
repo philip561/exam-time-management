@@ -97,10 +97,11 @@ footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);f
       <a href="#how">How it keeps time</a>
       <a href="#results">Results</a>
       <a href="#build">Build</a>
+      <a href="#defense">Defense</a>
       <a href="#installed">On the wall</a>
       <a href="#guide">Guide</a>
       <a href="#video" id="nav-video" hidden>Video</a>
-      <a href="#code" id="nav-code" hidden>Code</a>
+      <a href="#code" id="nav-code" hidden>Report</a>
       <a href="#team">Team</a>
     </nav>
   </div>
@@ -218,10 +219,25 @@ footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);f
   </div>
 </section>
 
+<section id="defense">
+  <div class="wrap">
+    <h2>Project defense day</h2>
+    <p class="prose">The system was presented at the external project defense. The first photo shows it in use: two papers have ended and show TIME UP!, while the third is still counting down.</p>
+    <figure style="margin-top:1.4rem">
+      <img class="wide" src="assets/defense-1.jpg" alt="The display on a table at the defense, showing EE515 and EE523 with TIME UP! and EE510 with 00:54:15 still counting down." width="1280" height="960" loading="lazy">
+      <figcaption class="note" style="margin-top:.5rem">Defense day: EE515 and EE523 have finished, and EE510 is still running.</figcaption>
+    </figure>
+    <div class="gallery" style="margin-top:1.6rem">
+      <figure><img src="assets/defense-2.jpg" alt="Six people standing on either side of the display at the defense venue." loading="lazy"><figcaption>With the board at the defense venue.</figcaption></figure>
+      <figure><img src="assets/defense-3.jpg" alt="Seven people standing together behind the display, which rests on the ground outside the building." loading="lazy"><figcaption>Group photo with the board after the defense.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <section id="installed">
   <div class="wrap">
     <h2>Mounted and running</h2>
-    <p class="prose">After the bench tests, the board was installed in the NLTA Engineering Theatre, where it is meant for use during examinations held in the venue. It is mounted on the wall above the whiteboards. The keypad unit sits on the wall below it, and the cable runs down the wall to the controllers and power supply.</p>
+    <p class="prose">After the defense, the board was installed in the NLTA Engineering Theatre, where it is meant for use during examinations held in the venue. It is mounted on the wall above the whiteboards. The keypad unit sits on the wall below it, and the cable runs down the wall to the controllers and power supply.</p>
     <figure style="margin-top:1.4rem">
       <img class="wide" src="assets/installed-1.jpg" alt="The finished display on the wall of the NLTA Engineering Theatre showing three red course codes, EE511, EE520 and EE510, each above a green countdown time." width="1500" height="1125" loading="lazy">
       <figcaption class="note" style="margin-top:.5rem">The finished board in the NLTA Engineering Theatre, counting down three courses at once.</figcaption>
@@ -238,21 +254,6 @@ footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);f
     <div class="gallery portrait">
       <figure><img src="assets/installed-2.jpg" alt="A group member standing below the live display, which shows EE511 at 00:12:28, EE520 at 00:27:28 and EE510 at 00:56:38." loading="lazy" style="object-position:center top"><figcaption>The three cells showing the time left for EE511, EE520 and EE510.</figcaption></figure>
       <figure><img src="assets/installed-3.jpg" alt="A group member below the live display, which now shows EE511 at 00:12:45, EE520 at 00:27:45 and EE510 at 00:56:55." loading="lazy" style="object-position:center top"><figcaption>Moments later, all three counts have moved on together.</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section id="defense">
-  <div class="wrap">
-    <h2>Project defense day</h2>
-    <p class="prose">The system was presented at the external project defense. The first photo shows it in use: two papers have ended and show TIME UP!, while the third is still counting down.</p>
-    <figure style="margin-top:1.4rem">
-      <img class="wide" src="assets/defense-1.jpg" alt="The display on a table at the defense, showing EE515 and EE523 with TIME UP! and EE510 with 00:54:15 still counting down." width="1280" height="960" loading="lazy">
-      <figcaption class="note" style="margin-top:.5rem">Defense day: EE515 and EE523 have finished, and EE510 is still running.</figcaption>
-    </figure>
-    <div class="gallery" style="margin-top:1.6rem">
-      <figure><img src="assets/defense-2.jpg" alt="Six people standing on either side of the display at the defense venue." loading="lazy"><figcaption>With the board at the defense venue.</figcaption></figure>
-      <figure><img src="assets/defense-3.jpg" alt="Seven people standing together behind the display, which rests on the ground outside the building." loading="lazy"><figcaption>Group photo with the board after the defense.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -290,9 +291,9 @@ footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);f
 
 <section id="code" hidden>
   <div class="wrap">
-    <h2>Source code and report</h2>
-    <p class="prose">The firmware for both controllers is written in C++ for the Arduino environment. The project report has the circuit diagrams, calculations and test details.</p>
-    <p style="display:flex;flex-wrap:wrap;gap:.7rem"><a class="btn" id="code-link" href="#" hidden>Browse the source code</a><a class="btn alt" id="report-link" href="#" hidden>Read the full report</a></p>
+    <h2>Report and source code</h2>
+    <p class="prose">The full project report has the circuit diagrams, calculations, firmware design and test details. The firmware for both controllers is written in C++ for the Arduino environment.</p>
+    <p style="display:flex;flex-wrap:wrap;gap:.7rem"><a class="btn" id="code-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Browse the source code</a><a class="btn alt" id="report-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Read the full report</a><a class="btn alt" id="academia-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Read it on Academia</a></p>
   </div>
 </section>
 
@@ -313,13 +314,14 @@ footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);f
 <section id="team">
   <div class="wrap">
     <h2>The team</h2>
+    <p class="note" style="margin-bottom:.6rem">Select a name to open that person's LinkedIn profile.</p>
     <ul class="team">
-      <li>Idris Adamu Shuaibu</li>
+      <li><a href="https://www.linkedin.com/in/adamu-idris-shuaibu-gmnse-mniee-299234213/" target="_blank" rel="noopener noreferrer">Idris Adamu Shuaibu</a></li>
       <li>Dashe Tongnan Levi</li>
       <li>Abdulhayyu Muhammed</li>
-      <li>Saliu Abdulgafar</li>
+      <li><a href="https://www.linkedin.com/in/abdulgafar-saliu-095375344/" target="_blank" rel="noopener noreferrer">Saliu Abdulgafar</a></li>
       <li>Caleb Ponsak Philip</li>
-      <li>Sani Philip Friday</li>
+      <li><a href="https://www.linkedin.com/in/friday-sani-8a0027228/" target="_blank" rel="noopener noreferrer">Sani Philip Friday</a></li>
     </ul>
     <p class="prose"><strong>Supervisor:</strong> Engr. Yusuf Saleh</p>
     <p class="prose">Department of Electrical and Electronics Engineering, Faculty of Engineering and Engineering Technology, Abubakar Tafawa Balewa University, Bauchi.</p>
@@ -336,27 +338,30 @@ footer{border-top:1px solid var(--rule);padding:2rem 0 3rem;color:var(--muted);f
 
 <script>
 /* ---------- Edit these links after you publish ----------
-   report  : link to the PDF of the report (for example "docs/Project_Report.pdf") or a full web address
+   report  : link to the report PDF (a full web address, or "docs/Project_Report.pdf" after you upload it)
+   academia: link to the report on Academia.edu
    code    : link to the firmware folder in your repository
    video   : the YouTube video ID only (the part after v= in the address)
    article : link to your LinkedIn or other article
    contact : link for questions, such as mailto:you@example.com or your LinkedIn profile
    Leave a value empty ("") and that button or section stays hidden. */
-var LINKS = { report:"", code:"", video:"", article:"", contact:"" };
+var LINKS = { report:"https://www.scribd.com/doc/1097733052", academia:"https://www.academia.edu/181123584/Design_and_Construction_of_Examination_countdown_time_management_system", code:"", video:"", article:"", contact:"" };
 
 /* ---------- Links ---------- */
 (function(){
   var actions=document.getElementById('actions');
-  function add(label,href,primary){var a=document.createElement('a');a.className='btn'+(primary?'':' alt');a.href=href;a.textContent=label;actions.appendChild(a);}
+  function add(label,href,primary){var a=document.createElement('a');a.className='btn'+(primary?'':' alt');a.href=href;a.textContent=label;if(/^https?:/.test(href)){a.target='_blank';a.rel='noopener noreferrer';}actions.appendChild(a);}
   if(LINKS.report) add('Read the full report',LINKS.report,true);
+  if(LINKS.academia) add('Read it on Academia',LINKS.academia,false);
   if(LINKS.code) add('Browse the source code',LINKS.code,false);
   if(LINKS.video) add('Watch the demo video','#video',false);
   if(LINKS.article) add('Read the story',LINKS.article,false);
   if(!actions.children.length) actions.hidden=true;
   if(LINKS.video){document.getElementById('video').hidden=false;document.getElementById('nav-video').hidden=false;document.getElementById('video-frame').src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(LINKS.video);}
-  if(LINKS.code||LINKS.report){document.getElementById('code').hidden=false;document.getElementById('nav-code').hidden=false;
+  if(LINKS.code||LINKS.report||LINKS.academia){document.getElementById('code').hidden=false;document.getElementById('nav-code').hidden=false;
     if(LINKS.code){var c=document.getElementById('code-link');c.href=LINKS.code;c.hidden=false;}
-    if(LINKS.report){var r=document.getElementById('report-link');r.href=LINKS.report;r.hidden=false;}}
+    if(LINKS.report){var r=document.getElementById('report-link');r.href=LINKS.report;r.hidden=false;}
+    if(LINKS.academia){var ac=document.getElementById('academia-link');ac.href=LINKS.academia;ac.hidden=false;}}
   if(LINKS.contact){var cl=document.getElementById('contact-line');cl.hidden=false;document.getElementById('contact-link').href=LINKS.contact;}
   if(LINKS.article){document.getElementById('article-line').hidden=false;document.getElementById('article-link').href=LINKS.article;}
 })();
